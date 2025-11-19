@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Encuesta de Satisfacción - Ayuntamiento de Mineral de la Reforma</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --vino: #75142e;
+      --dorado: #bb935c;
+      --tinta: #1b1b1b;
+      --papel: #ffffff;
+      --niebla: #f5f5f5;
+      --borde: #e5e5e5;
+
+      --radius: 16px;
+      --shadow-soft: 0 8px 22px rgba(0, 0, 0, 0.08);
+      --transition-fast: 0.22s ease-out;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-main);
+      background: var(--niebla);
+      color: var(--tinta);
+    }
+
+    /* NAV SUPERIOR */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 18px;
+      backdrop-filter: blur(10px);
+      background: rgba(117, 20, 46, 0.96);
+      color: var(--papel);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .topbar-title {
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.98rem;
+    }
+
+    .topbar-title span.logo-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--dorado);
+      display: inline-block;
+    }
+
+    .topbar-nav {
+      display: flex;
+      gap: 10px;
+      font-size: 0.8rem;
+    }
+
+    .topbar-nav button {
+      border: none;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--papel);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      border: 1px solid transparent;
+    }
+
+    .topbar-nav button:hover {
+      border-color: var(--dorado);
+      background: rgba(0,0,0,0.12);
+    }
+
+    /* LAYOUT */
+    .page {
+      max-width: 1180px;
+      margin: 20px auto 40px;
+      padding: 0 16px 24px;
+      display: grid;
+      grid-template-columns: 2.1fr 1.1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; }
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--papel);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      margin-bottom: 14px;
+      border: 1px solid var(--borde);
+      transition: transform var(--transition-fast),
+                  box-shadow var(--transition-fast),
+                  border-color var(--transition-fast);
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+      border-color: var(--dorado);
+    }
+
+    h1,h2,h3 { margin: 0; }
+
+    .card h2 {
+      font-size: 1.1rem;
+      color: var(--vino);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card h2 span.icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      background: var(--dorado);
+      display: inline-block;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 6px 0 6px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: block;
+      margin: 10px 0 4px;
+      color: var(--tinta);
+    }
+
+    /* INPUTS */
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 10px;
+      border: 1px solid var(--borde);
+      font-size: 0.88rem;
+      font-family: var(--font-main);
+      transition: border-color var(--transition-fast),
+                  box-shadow var(--transition-fast),
+                  background var(--transition-fast);
+      background: var(--papel);
+    }
+
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--vino);
+      box-shadow: 0 0 0 2px rgba(117,20,46,0.08);
+      background: #fffdfd;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    /* RADIO PILLS */
+    .options-inline,
+    .options-block {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      font-size: 0.85rem;
+    }
+
+    .options-block { flex-direction: column; }
+
+    .radio-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--borde);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      background: var(--niebla);
+    }
+
+    .radio-pill input { display: none; }
+
+    .radio-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid var(--vino);
+      transition: all var(--transition-fast);
+      box-sizing: border-box;
+    }
+
+    .radio-pill span.text {
+      font-weight: 400;
+      color: var(--tinta);
+    }
+
+    .radio-pill.active {
+      background: var(--vino);
+      border-color: var(--vino);
+    }
+
+    .radio-pill.active .radio-indicator {
+      border-color: var(--papel);
+      background: var(--dorado);
+    }
+
+    .radio-pill.active span.text {
+      color: var(--papel);
+      font-weight: 500;
+    }
+
+    /* ESCALA 1-10 (se mantiene por si se requiere después) */
+    .scale-1-10 {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+      font-size: 0.72rem;
+      text-align: center;
+    }
+
+    .scale-label {
+      padding: 4px 0;
+      border-radius: 8px;
+      border: 1px solid var(--borde);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      background: var(--niebla);
+      color: var(--tinta);
+      user-select: none;
+    }
+
+    .scale-label input { display: none; }
+
+    .scale-label.active {
+      background: var(--vino);
+      color: var(--papel);
+      border-color: var(--vino);
+      font-weight: 600;
+    }
+
+    /* META: FOLIO Y FECHA */
+    .meta-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 4px 0 12px;
+      font-size: 0.85rem;
+    }
+
+    .meta-item {
+      flex: 1 1 160px;
+    }
+
+    .meta-item small {
+      display: block;
+      font-size: 0.72rem;
+      color: #777;
+      margin-top: 2px;
+    }
+
+    .submit-hint {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: #777;
+    }
+
+    .btn-enviar {
+      margin-top: 10px;
+      background: var(--vino);
+      color: var(--papel);
+      border: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 6px 14px rgba(117,20,46,0.25);
+      transition: all var(--transition-fast);
+    }
+
+    .btn-enviar:hover {
+      background: #5e1024;
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.22);
+    }
+
+    .btn-enviar span { font-size: 1.1rem; }
+
+    /* ASIDE */
+    aside .aside-title {
+      font-size: 1.02rem;
+      font-weight: 600;
+      color: var(--vino);
+      margin-bottom: 4px;
+    }
+
+    .placeholder-box {
+      border-radius: 12px;
+      border: 1px dashed var(--borde);
+      padding: 9px 10px;
+      font-size: 0.78rem;
+      color: #555;
+      background: var(--niebla);
+      margin-top: 6px;
+    }
+
+    .placeholder-box ul {
+      margin: 4px 0 0 14px;
+      padding: 0;
+    }
+
+    /* PROGRESO */
+    .progress-card {
+      position: sticky;
+      top: 60px;
+      z-index: 10;
+    }
+
+    .progress-label {
+      font-size: 0.8rem;
+      color: #555;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-label span.value {
+      font-weight: 600;
+      color: var(--vino);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--borde);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--dorado), var(--vino));
+      transition: width 0.25s ease-out;
+    }
+
+    /* PANEL DE EJEMPLO */
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 6px 0 10px;
+      font-size: 0.75rem;
+    }
+
+    .kpi {
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: var(--niebla);
+      border: 1px solid var(--borde);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .kpi-label {
+      color: #666;
+      font-size: 0.7rem;
+    }
+
+    .kpi-value {
+      font-weight: 700;
+      color: var(--vino);
+      font-size: 0.9rem;
+    }
+
+    .kpi-sub {
+      font-size: 0.65rem;
+      color: #888;
+    }
+
+    .mini-chart {
+      margin-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.7rem;
+    }
+
+    .chart-row-label {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+    }
+
+    .chart-bar-bg {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--borde);
+      overflow: hidden;
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--dorado), var(--vino));
+      width: 0;
+      transition: width 0.5s ease-out;
+    }
+
+    /* MAPA DE EJEMPLO */
+    .map-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+      font-size: 0.65rem;
+    }
+
+    .map-cell {
+      padding: 6px 4px;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid var(--borde);
+      transition: all var(--transition-fast);
+      background: var(--niebla);
+      color: var(--tinta);
+    }
+
+    .map-cell span.score {
+      display: block;
+      font-size: 0.6rem;
+      opacity: 0.85;
+    }
+
+    .map-cell:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      border-color: var(--dorado);
+    }
+
+    .nivel-alto { background: #fdf5ed; border-color: var(--dorado); }
+    .nivel-medio { background: #f7f7f7; }
+    .nivel-bajo { background: #fbe9ec; border-color: var(--vino); }
+
+    .map-detail {
+      margin-top: 6px;
+      font-size: 0.7rem;
+      color: #555;
+      padding: 6px 7px;
+      border-radius: 8px;
+      background: var(--niebla);
+      border: 1px solid var(--borde);
+      min-height: 40px;
+    }
+
+    .map-detail strong { color: var(--vino); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #777;
+      padding: 10px 8px 20px;
+    }
+
+    /* MODAL GRACIAS */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal {
+      background: var(--papel);
+      padding: 18px 18px 14px;
+      border-radius: var(--radius);
+      max-width: 320px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--dorado);
+      animation: popIn 0.25s ease-out;
+      font-size: 0.88rem;
+    }
+
+    .modal h3 {
+      margin-bottom: 6px;
+      color: var(--vino);
+      font-size: 1rem;
+    }
+
+    .modal button {
+      margin-top: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: none;
+      background: var(--vino);
+      color: var(--papel);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: var(--transition-fast);
+    }
+
+    .modal button:hover { background: #5e1024; }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-title">
+    <span class="logo-dot"></span>
+    Ayuntamiento de Mineral de la Reforma · Encuesta de Satisfacción
+  </div>
+  <div class="topbar-nav">
+    <button data-scroll="#intro">Propósito</button>
+    <button data-scroll="#form">Encuesta</button>
+    <button data-scroll="#dash">Panel</button>
+    <button data-scroll="#mapa">Mapa</button>
+  </div>
+</div>
+
+<div class="page">
+  <!-- COLUMNA IZQUIERDA: INTRO Y ENCUESTA -->
+  <section>
+    <!-- INTRO -->
+    <div class="card" id="intro">
+      <h2><span class="icon"></span> Cuestionario de Satisfacción de Trámites y Servicios</h2>
+      <p class="subtitle">
+        Objetivo: Conocer la opinión ciudadana sobre la calidad de la atención y los servicios municipales,
+        para mejorar la gestión pública.
+      </p>
+      <p class="subtitle">
+        El Presidente Municipal nos ha pedido evaluar el servicio que recibió hoy para mejorarlo.
+        ¿Nos regala menos de un minuto para responder solo 5 preguntas rápidas?
+      </p>
+      <p class="subtitle">
+        No se pedirán datos personales; la encuesta es totalmente anónima. Los datos se usarán solo con fines estadísticos.
+      </p>
+    </div>
+
+    <!-- DATOS GENERALES + CONTROL -->
+    <form class="card" id="form">
+      <h2><span class="icon"></span> Datos generales</h2>
+      <p class="subtitle">
+        Estos datos ayudan a entender mejor los resultados. No permiten identificar a ninguna persona.
+      </p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <label>Folio (uso interno)</label>
+          <input type="text" name="folio" placeholder="Escribe el folio asignado" />
+          <small>No se comparte con la ciudadanía.</small>
+        </div>
+        <div class="meta-item">
+          <label>Fecha de elaboración</label>
+          <input type="date" name="fecha_elaboracion" />
+        </div>
+      </div>
+
+      <label>1. Sexo:</label>
+      <div class="options-inline">
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="sexo" value="Mujer" data-track="group">
+          <span class="text">Mujer</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="sexo" value="Hombre" data-track="group">
+          <span class="text">Hombre</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="sexo" value="No binario" data-track="group">
+          <span class="text">No binario</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="sexo" value="Prefiero no decirlo" data-track="group">
+          <span class="text">Prefiero no decirlo</span>
+        </label>
+      </div>
+
+      <label>2. Edad:</label>
+      <div class="options-inline">
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="edad" value="menos_25" data-track="group">
+          <span class="text">Menos de 25</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="edad" value="26_40" data-track="group">
+          <span class="text">26 - 40</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="edad" value="41_60" data-track="group">
+          <span class="text">41 - 60</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="edad" value="mas_60" data-track="group">
+          <span class="text">Más de 60</span>
+        </label>
+      </div>
+
+      <label>3. Colonia o comunidad:</label>
+      <input type="text" name="colonia" placeholder="Escribe tu colonia o comunidad" data-track="field"/>
+
+      <label>4. Tipo de trámite o servicio que realizó:</label>
+      <input type="text" name="tipo_tramite" placeholder="Ej. Predial, Licencia, Atención ciudadana, etc." data-track="field"/>
+    </form>
+
+    <!-- SECCIÓN 1: RESOLUCIÓN -->
+    <div class="card">
+      <h2><span class="icon"></span> Sección 1. Resolución</h2>
+
+      <label>5. ¿Logró realizar, concluir y resolver su trámite o problema en esta visita?</label>
+      <div class="options-inline">
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="resolucion" value="si_totalmente" data-track="group">
+          <span class="text">Sí, totalmente</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="resolucion" value="parcialmente" data-track="group">
+          <span class="text">Parcialmente (me pidieron más requisitos y debo volver)</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="resolucion" value="no_se_resolvio" data-track="group">
+          <span class="text">No se resolvió</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 2: ATENCIÓN CIUDADANA -->
+    <div class="card">
+      <h2><span class="icon"></span> Sección 2. Atención ciudadana</h2>
+
+      <label>6. ¿Cómo califica la amabilidad del personal que lo atendió?</label>
+      <div class="options-inline">
+        <label class="radio-pill"><span class="radio-indicator"></span>
+          <input type="radio" name="amabilidad" value="muy_buena" data-track="group">
+          <span class="text">Muy buena</span>
+        </label>
+        <label class="radio-pill"><span class="radio-indicator"></span>
+          <input type="radio" name="amabilidad" value="buena" data-track="group">
+          <span class="text">Buena</span>
+        </label>
+        <label class="radio-pill"><span class="radio-indicator"></span>
+          <input type="radio" name="amabilidad" value="regular" data-track="group">
+          <span class="text">Regular</span>
+        </label>
+        <label class="radio-pill"><span class="radio-indicator"></span>
+          <input type="radio" name="amabilidad" value="mala" data-track="group">
+          <span class="text">Mala</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 3: CLARIDAD Y TIEMPO -->
+    <div class="card">
+      <h2><span class="icon"></span> Sección 3. Claridad de la información y tiempo de espera</h2>
+
+      <label>7. ¿Cómo califica la claridad de la información recibida y el tiempo de espera?</label>
+      <div class="options-block">
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="claridad_tiempo" value="muy_mala" data-track="group">
+          <span class="text">Muy mala (la información fue confusa y/o esperé demasiado)</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="claridad_tiempo" value="mala" data-track="group">
+          <span class="text">Mala</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="claridad_tiempo" value="regular" data-track="group">
+          <span class="text">Regular (ni bien ni mal)</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="claridad_tiempo" value="buena" data-track="group">
+          <span class="text">Buena</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="claridad_tiempo" value="excelente" data-track="group">
+          <span class="text">Excelente (rápido y muy claro)</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SECCIÓN 4 Y 5: SATISFACCIÓN GENERAL Y PERCEPCIÓN -->
+    <div class="card">
+      <h2><span class="icon"></span> Sección 4. Satisfacción general</h2>
+
+      <label>8. En una escala del 1 al 5, ¿qué tan satisfecho(a) está con el servicio general recibido hoy?</label>
+      <div class="options-block">
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="satisfaccion_general" value="1_muy_satisfecho" data-track="group">
+          <span class="text">1. Muy satisfecho(a) — expectativas superadas, excelente atención.</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="satisfaccion_general" value="2_satisfecho" data-track="group">
+          <span class="text">2. Satisfecho(a) — el servicio fue bueno y cumplió.</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="satisfaccion_general" value="3_neutral" data-track="group">
+          <span class="text">3. Neutral — regular, ni bien ni mal; solo lo básico.</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="satisfaccion_general" value="4_insatisfecho" data-track="group">
+          <span class="text">4. Insatisfecho(a) — hubo problemas, el servicio fue malo.</span>
+        </label>
+        <label class="radio-pill">
+          <span class="radio-indicator"></span>
+          <input type="radio" name="satisfaccion_general" value="5_muy_insatisfecho" data-track="group">
+          <span class="text">5. Muy insatisfecho(a) — pésima experiencia, no se cumplió nada.</span>
+        </label>
+      </div>
+
+      <h2 style="margin-top: 16px; font-size: 1rem;">
+        <span class="icon"></span> Sección 5. Percepción general
+      </h2>
+
+      <label>9. ¿Qué podría mejorar la presidencia municipal para ofrecerle una mejor atención?</label>
+      <textarea name="comentarios" placeholder="Escriba aquí sus sugerencias..." data-track="field"></textarea>
+
+      <p class="submit-hint">
+        Al hacer clic en "Enviar respuesta" en el sistema oficial, la información se almacenará de forma segura
+        para alimentar el panel y el mapa de resultados.
+      </p>
+      <button type="button" class="btn-enviar" id="btnEnviar">
+        Enviar respuesta <span>➜</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- COLUMNA DERECHA: PROGRESO + PANEL + MAPA -->
+  <aside>
+    <!-- PROGRESO -->
+    <div class="card progress-card">
+      <div class="aside-title">Progreso de la encuesta</div>
+      <div class="progress-label">
+        <span>Preguntas respondidas</span>
+        <span class="value" id="progressText">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <p class="subtitle">
+        El medidor se actualiza automáticamente conforme completas la encuesta.
+      </p>
+    </div>
+
+    <!-- PANEL EJEMPLO -->
+    <div class="card" id="dash">
+      <div class="aside-title">📊 Panel de resultados (ejemplo)</div>
+      <p class="subtitle">
+        Simulación de cómo se verían los indicadores en un dashboard (Looker Studio / BI).
+      </p>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">Satisfacción promedio</div>
+          <div class="kpi-value" id="kpiSat">4.3</div>
+          <div class="kpi-sub">Escala 1 a 5</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">% recomendaría</div>
+          <div class="kpi-value" id="kpiRec">92%</div>
+          <div class="kpi-sub">Ciudadanía satisfecha</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Respuestas</div>
+          <div class="kpi-value" id="kpiResp">1,230</div>
+          <div class="kpi-sub">Encuestas acumuladas</div>
+        </div>
+      </div>
+
+      <div class="mini-chart">
+        <div class="chart-row-label">
+          <span>Predial</span><span>4.4</span>
+        </div>
+        <div class="chart-bar-bg">
+          <div class="chart-bar-fill" data-value="4.4"></div>
+        </div>
+
+        <div class="chart-row-label">
+          <span>Licencias</span><span>4.2</span>
+        </div>
+        <div class="chart-bar-bg">
+          <div class="chart-bar-fill" data-value="4.2"></div>
+        </div>
+
+        <div class="chart-row-label">
+          <span>Atención ciudadana</span><span>4.0</span>
+        </div>
+        <div class="chart-bar-bg">
+          <div class="chart-bar-fill" data-value="4.0"></div>
+        </div>
+      </div>
+
+      <div class="placeholder-box">
+        En producción, estos valores vendrían directamente de la base de datos / Google Sheets / API,
+        y este espacio se puede reemplazar por un iframe de Looker Studio.
+      </div>
+    </div>
+
+    <!-- MAPA EJEMPLO -->
+    <div class="card" id="mapa">
+      <div class="aside-title">🗺️ Mapa de percepción por colonia (ejemplo)</div>
+      <p class="subtitle">
+        Representación simplificada: cada bloque es una colonia con su nivel promedio de satisfacción.
+      </p>
+
+      <div class="map-grid" id="mapGrid">
+        <div class="map-cell nivel-alto" data-colonia="La Reforma" data-score="4.6">
+          La Reforma<span class="score">4.6</span>
+        </div>
+        <div class="map-cell nivel-alto" data-colonia="Paseos de Chavarría" data-score="4.4">
+          Paseos<span class="score">4.4</span>
+        </div>
+        <div class="map-cell nivel-medio" data-colonia="Privadas del Río" data-score="3.9">
+          Priv. del Río<span class="score">3.9</span>
+        </div>
+        <div class="map-cell nivel-bajo" data-colonia="Col. Centro" data-score="3.2">
+          Centro<span class="score">3.2</span>
+        </div>
+        <div class="map-cell nivel-alto" data-colonia="Tulipanes" data-score="4.5">
+          Tulipanes<span class="score">4.5</span>
+        </div>
+        <div class="map-cell nivel-medio" data-colonia="Carboneras" data-score="3.8">
+          Carboneras<span class="score">3.8</span>
+        </div>
+        <div class="map-cell nivel-bajo" data-colonia="El Saucillo" data-score="3.3">
+          Saucillo<span class="score">3.3</span>
+        </div>
+        <div class="map-cell nivel-medio" data-colonia="Campestre" data-score="4.0">
+          Campestre<span class="score">4.0</span>
+        </div>
+      </div>
+
+      <div class="map-detail" id="mapDetail">
+        Selecciona una colonia para ver detalles de ejemplo.
+      </div>
+
+      <div class="placeholder-box">
+        En el sistema real, este componente podría ser sustituido por un mapa geoespacial
+        (Leaflet, Google Maps, GeoJSON) integrado con los datos de la encuesta.
+      </div>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  Ayuntamiento de Mineral de la Reforma · Dirección de Atención Ciudadana · 2025
+</footer>
+
+<!-- MODAL GRACIAS -->
+<div class="modal-backdrop" id="modalGracias">
+  <div class="modal">
+    <h3>¡Gracias por tu participación! 🍷</h3>
+    <p>
+      Esta es una versión demostrativa. En la implementación oficial tus respuestas
+      alimentarán automáticamente el panel y el mapa institucional.
+    </p>
+    <button id="cerrarModal">Cerrar</button>
+  </div>
+</div>
+
+<script>
+  // Scroll suave desde la barra superior
+  document.querySelectorAll(".topbar-nav button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const target = document.querySelector(btn.dataset.scroll);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  // Actualizar estilo de radio-pill
+  function updateRadioPills() {
+    document.querySelectorAll(".radio-pill").forEach(pill => {
+      const input = pill.querySelector("input[type='radio']");
+      if (input && input.checked) pill.classList.add("active");
+      else pill.classList.remove("active");
+    });
+  }
+
+  // Actualizar estilo de escala 1-10
+  function updateScaleLabels() {
+    document.querySelectorAll(".scale-label").forEach(lbl => {
+      const input = lbl.querySelector("input[type='radio']");
+      if (input && input.checked) lbl.classList.add("active");
+      else lbl.classList.remove("active");
+    });
+  }
+
+  // Progreso dinámico
+  function calcularProgreso() {
+    const radios = Array.from(document.querySelectorAll("[data-track='group'][type='radio']"));
+    const textos = Array.from(document.querySelectorAll("[data-track='field']"));
+    const grupos = [...new Set(radios.map(r => r.name))];
+
+    let total = grupos.length + textos.length;
+    let contestadas = 0;
+
+    grupos.forEach(nombre => {
+      if (radios.some(r => r.name === nombre && r.checked)) contestadas++;
+    });
+
+    textos.forEach(t => {
+      if (t.value.trim().length > 0) contestadas++;
+    });
+
+    const porcentaje = total > 0 ? Math.round((contestadas / total) * 100) : 0;
+    const bar = document.getElementById("progressBar");
+    const label = document.getElementById("progressText");
+
+    if (bar && label) {
+      bar.style.width = porcentaje + "%";
+      label.textContent = porcentaje + "%";
+    }
+  }
+
+  // Listeners de cambios
+  document.addEventListener("change", e => {
+    if (e.target.matches("input[type='radio']")) {
+      updateRadioPills();
+      updateScaleLabels();
+    }
+    if (e.target.matches("[data-track]")) {
+      calcularProgreso();
+    }
+  });
+
+  document.addEventListener("input", e => {
+    if (e.target.matches("[data-track='field']")) {
+      calcularProgreso();
+    }
+  });
+
+  // Modal demo
+  const btnEnviar = document.getElementById("btnEnviar");
+  const modal = document.getElementById("modalGracias");
+  const cerrarModal = document.getElementById("cerrarModal");
+
+  if (btnEnviar && modal && cerrarModal) {
+    btnEnviar.addEventListener("click", () => {
+      modal.style.display = "flex";
+    });
+    cerrarModal.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
+  }
+
+  // Animar mini-chart de ejemplo
+  document.querySelectorAll(".chart-bar-fill").forEach(bar => {
+    const v = parseFloat(bar.dataset.value || "0");
+    const maxEscala = 5; // ahora la escala es 1-5
+    const pct = Math.max(0, Math.min(100, (v / maxEscala) * 100));
+    requestAnimationFrame(() => { bar.style.width = pct + "%"; });
+  });
+
+  // Mapa ejemplo: mostrar detalle al hacer clic
+  const mapDetail = document.getElementById("mapDetail");
+  document.querySelectorAll(".map-cell").forEach(cell => {
+    cell.addEventListener("click", () => {
+      const colonia = cell.dataset.colonia;
+      const score = cell.dataset.score;
+      mapDetail.innerHTML =
+        `<strong>${colonia}</strong>: satisfacción promedio <strong>${score}</strong> ` +
+        `(dato demostrativo). En el panel real se mostrarían más métricas de esa zona.`;
+    });
+  });
+
+  // Inicializar estados visuales
+  updateRadioPills();
+  updateScaleLabels();
+  calcularProgreso();
+</script>
+
+</body>
+</html>
